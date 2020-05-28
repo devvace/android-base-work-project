@@ -5,10 +5,10 @@ This project is the first default project to be brought in Android
 
 
 적용 모듈
-========
+=======================================
 
 # File Header
-## File 생성시 만든 시간 포함해서 주석 추가
+- File 생성시 만든 시간 포함해서 주석 추가
 
 # Git connection
 - BaseWorkProject git
