@@ -28,7 +28,7 @@ This project is the first default project to be brought in Android
 - ConnectivityManager.CONNECTIVITY_ACTION deprecated 대응
 
 ### Kotlin extension
-- FindViewById 와 이별
+- Boilerplate code를 위함
 
 ### Loading dialog progress UI
 - loading image가 돌고 있는 dialog 추가
