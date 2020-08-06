@@ -9,7 +9,7 @@ This project is the first default project to be brought in Android
 
 ### Dlog library
 - Application release시 log가 찍히지 않게 함
-- ref) https://gun0912.tistory.com/12
+- ref) [링크](https://gun0912.tistory.com/12)
 
 ### Proguard
 - APK 파일 디컴파일 시 코드 노출 방어
