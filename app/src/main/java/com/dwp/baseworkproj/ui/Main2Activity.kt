@@ -2,15 +2,16 @@ package com.dwp.baseworkproj.ui
 
 import android.os.Bundle
 import com.dwp.baseworkproj.BaseActivity
-import com.dwp.baseworkproj.R
-import kotlinx.android.synthetic.main.activity_main2.*
+import com.dwp.baseworkproj.databinding.ActivityMain2Binding
 
 class Main2Activity : BaseActivity() {
+    private lateinit var binding: ActivityMain2Binding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main2)
+        binding = ActivityMain2Binding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        txt_test.text = sharedPrefStringLoad("test")
+        binding.txtTest.text = sharedPrefStringLoad("test")
     }
 }

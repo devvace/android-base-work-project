@@ -7,14 +7,10 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
-import android.text.TextUtils
 import androidx.appcompat.app.AppCompatDialog
-import kotlinx.android.synthetic.main.dialog_loading.*
 
 /**
  * Created by dwp on 2020-05-22.
@@ -82,62 +78,6 @@ class BaseApplication: Application() {
             e.printStackTrace()
         }
         return debuggable
-    }
-
-    /** Loading progress가 작동하는 Dialog를 생성성 **/
-    fun dialogLoadingOn(activity: Activity, message: String) {
-        if(activity.isFinishing) return
-        if(dialogLoading.isShowing) {
-           dialogLoadingSet(message)
-        } else {
-            dialogLoading.setCancelable(false)
-            if(dialogLoading.window != null) {
-                dialogLoading.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-            }
-            dialogLoading.setContentView(R.layout.dialog_loading)
-            dialogLoading.show()
-        }
-
-        if(!TextUtils.isEmpty(message) && dialogLoading.txt_progress_message != null) {
-            dialogLoading.txt_progress_message.text = message
-        }
-    }
-
-    /** Loading progress가 작동 중일 때, 글자만 변경 **/
-    fun dialogLoadingSet(message: String) {
-        if(!dialogLoading.isShowing) return
-
-        if(!TextUtils.isEmpty(message) && dialogLoading.txt_progress_message != null) {
-            dialogLoading.txt_progress_message.text = message
-        }
-    }
-
-    /** Loading progress dialog 종료 **/
-    fun dialogLoadingOff() {
-        if(dialogLoading.isShowing) {
-            dialogLoading.dismiss()
-        }
-    }
-
-    /** Network 연결 Loading progress가 작동하는 Dialog를 생성 **/
-    fun dialogNetworkLoadingOn(activity: Activity) {
-        if(activity.isFinishing) return
-        dialogNetworkLoading = AppCompatDialog(activity)
-        dialogNetworkLoading.setCancelable(false)
-        if(dialogNetworkLoading.window != null) {
-            dialogNetworkLoading.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        }
-        dialogNetworkLoading.setContentView(R.layout.dialog_loading)
-        dialogNetworkLoading.show()
-        dialogNetworkLoading.txt_progress_message.text = getString(R.string.network_connect_try_msg)
-    }
-
-
-    /** Network 연결 Loading progress dialog 종료 **/
-    fun dialogNetworkLoadingOff() {
-        if(dialogNetworkLoading.isShowing) {
-            dialogNetworkLoading.dismiss()
-        }
     }
 
     /** 네트워크 연결 상태 확인
