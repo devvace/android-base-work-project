@@ -33,7 +33,6 @@ class NetworkStateMonitor(activity: Activity): ConnectivityManager.NetworkCallba
         super.onAvailable(network)
         // Do what you need to do here
         Dlog.i("networkAvailable()")
-        BaseApplication.instance?.dialogNetworkLoadingOff()
     }
 
     /** Network가 Available 상태에서 Unavailable로 변경되면 Call
@@ -41,7 +40,6 @@ class NetworkStateMonitor(activity: Activity): ConnectivityManager.NetworkCallba
     override fun onLost(network: Network) {
         super.onLost(network)
         Dlog.i("networkUnavailable()")
-        BaseApplication.instance?.dialogNetworkLoadingOn(activityContext)
     }
 
 }

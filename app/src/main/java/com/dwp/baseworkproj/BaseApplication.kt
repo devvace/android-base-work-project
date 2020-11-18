@@ -1,70 +1,28 @@
 package com.dwp.baseworkproj
 
-import android.annotation.SuppressLint
-import android.app.Activity
 import android.app.Application
 import android.content.Context
-import android.content.SharedPreferences
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
-import androidx.appcompat.app.AppCompatDialog
 
 /**
  * Created by dwp on 2020-05-22.
  */
 
 class BaseApplication: Application() {
-    private lateinit var dialogLoading: AppCompatDialog
-    private lateinit var dialogNetworkLoading: AppCompatDialog
-    private lateinit var preferences: SharedPreferences
-    private lateinit var editor: SharedPreferences.Editor
-
     companion object {
         var DEBUG = false
         var instance: BaseApplication? = null
             private set
     }
 
-    @SuppressLint("CommitPrefEdits")
     override fun onCreate() {
         super.onCreate()
         instance = this
         DEBUG = isDebuggable(this)
-        dialogLoading = AppCompatDialog(this)
-        dialogNetworkLoading = AppCompatDialog(this)
-        preferences = this.getSharedPreferences("rtc", Context.MODE_PRIVATE)
-        editor = preferences.edit()
-    }
-
-    /** 이하 SharedPreference 처리 **/
-    fun sharedPrefSave(activity: Activity, key: String, value: String) {
-        editor.putString(key, value)
-        editor.apply()
-    }
-
-    fun sharedPrefSave(activity: Activity, key: String, value: Int) {
-        editor.putInt(key, value)
-        editor.apply()
-    }
-
-    fun sharedPrefSave(activity: Activity, key: String, value: Boolean) {
-        editor.putBoolean(key, value)
-        editor.apply()
-    }
-
-    fun sharedPrefStringLoad(activity: Activity, key: String): String? {
-        return preferences.getString(key, "")
-    }
-
-    fun sharedPrefIntegerLoad(activity: Activity, key: String): Int? {
-        return preferences.getInt(key, -1)
-    }
-
-    fun sharedPrefBooleanLoad(activity: Activity, key: String): Boolean? {
-        return preferences.getBoolean(key, false)
     }
 
     /** Debug인지 Release인지 판단해서 Release상태이면 Log를 출력하지 않게 **/
@@ -112,6 +70,4 @@ class BaseApplication: Application() {
         }
         return result
     }
-
-
 }

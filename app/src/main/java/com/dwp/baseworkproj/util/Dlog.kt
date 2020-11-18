@@ -10,7 +10,7 @@ import java.lang.StringBuilder
 
 class Dlog {
     companion object {
-        private val TAG = "DWPARK"
+        private const val TAG = "DWPARK"
         fun e(message: String) {
             if(BaseApplication.DEBUG) Log.e(TAG, buildLogMsg(message))
         }
