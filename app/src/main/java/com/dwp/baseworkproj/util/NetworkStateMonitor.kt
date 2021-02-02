@@ -1,20 +1,26 @@
 package com.dwp.baseworkproj.util
 
-import android.app.Activity
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.Network
 import android.net.NetworkCapabilities
 import android.net.NetworkRequest
-import com.dwp.baseworkproj.BaseApplication
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleObserver
+import androidx.lifecycle.OnLifecycleEvent
 
 /**
  * Created by dwp on 2020-05-25.
  */
 
-class NetworkStateMonitor(activity: Activity): ConnectivityManager.NetworkCallback() {
-    private lateinit var connectivityManager: ConnectivityManager
-    var activityContext: Activity = activity
+
+class NetworkStateMonitor(private val lifecycleOwner: AppCompatActivity):
+    ConnectivityManager.NetworkCallback(),
+    LifecycleObserver {
+
+    private val connectivityManager = lifecycleOwner.getSystemService(Context.CONNECTIVITY_SERVICE)
+            as ConnectivityManager
 
     /** Network를 감지할 Capabilities 선언 **/
     private val networkRequest: NetworkRequest = NetworkRequest.Builder()
@@ -22,24 +28,41 @@ class NetworkStateMonitor(activity: Activity): ConnectivityManager.NetworkCallba
         .addTransportType(NetworkCapabilities.TRANSPORT_WIFI)
         .build()
 
+
+    /** 최초 앱 실행시 네트워크 상태 체크 **/
+    fun initNetworkCheck() {
+        val activeNetwork = connectivityManager.activeNetwork
+        if(activeNetwork != null) {
+            DLog.e("네트워크 연결되어 있음")
+        } else {
+            DLog.e("네트워크 연결되어 있지않음")
+        }
+    }
+
     /** Network 모니터링 서비스 시작 **/
     fun enable() {
-        connectivityManager =  activityContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        check(lifecycleOwner.lifecycle.currentState.isAtLeast(Lifecycle.State.INITIALIZED))
         connectivityManager.registerNetworkCallback(networkRequest, this)
+    }
+
+    /** Network 모니터링 서비스 해제 **/
+    @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
+    fun disable() {
+        connectivityManager.unregisterNetworkCallback(this)
+        lifecycleOwner.lifecycle.removeObserver(this)
     }
 
     /** Network가 Available 상태이면 Call **/
     override fun onAvailable(network: Network) {
         super.onAvailable(network)
-        // Do what you need to do here
-        Dlog.i("networkAvailable()")
+        DLog.i("networkAvailable()")
     }
 
     /** Network가 Available 상태에서 Unavailable로 변경되면 Call
      * 처음 앱 시작시 Unavailable 인지는 캐치하지 못 함 **/
     override fun onLost(network: Network) {
         super.onLost(network)
-        Dlog.i("networkUnavailable()")
+        DLog.i("networkUnavailable()")
     }
 
 }

@@ -8,7 +8,7 @@ import java.lang.StringBuilder
  * Created by dwp on 2020-05-22.
  **/
 
-class Dlog {
+class DLog(s: String) {
     companion object {
         private const val TAG = "DWPARK"
         fun e(message: String) {
@@ -35,10 +35,10 @@ class Dlog {
             val ste : StackTraceElement = Thread.currentThread().stackTrace[4]
             val sb = StringBuilder()
             sb.append("[")
-            sb.append(ste.fileName.replace(".java", ""))
+            sb.append(ste.fileName.replace(".kt", ""))
             sb.append("::")
             sb.append(ste.methodName)
-            sb.append("]")
+            sb.append("] ")
             sb.append(message)
 
             return sb.toString()
