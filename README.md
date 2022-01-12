@@ -18,4 +18,6 @@ This project is the first default project to be brought in Android
 - NetworkCallback() 사용
 - ConnectivityManager.CONNECTIVITY_ACTION deprecated 대응
 
-### Kotlin extension
+### Kotlin extension (X)
+- 더 이상 지원되지 않음으로 삭제
+- FindViewById() 대체 라이브러리는 ViewBinding으로 대체
