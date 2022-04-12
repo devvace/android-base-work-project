@@ -20,8 +20,6 @@ open class BaseActivity : AppCompatActivity() {
         // Network 상태 모니터 서비스 라이프사이클 등록 및 시작
         val networkStatusMonitor =  NetworkStateMonitor(this)
         lifecycle += networkStatusMonitor
-        networkStatusMonitor.enable()
-        networkStatusMonitor.initNetworkCheck()
     }
 
 }

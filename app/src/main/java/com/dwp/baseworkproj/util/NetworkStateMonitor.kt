@@ -6,9 +6,7 @@ import android.net.Network
 import android.net.NetworkCapabilities
 import android.net.NetworkRequest
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleObserver
-import androidx.lifecycle.OnLifecycleEvent
+import androidx.lifecycle.*
 
 /**
  * Created by dwp on 2020-05-25.
@@ -17,7 +15,7 @@ import androidx.lifecycle.OnLifecycleEvent
 
 class NetworkStateMonitor(private val lifecycleOwner: AppCompatActivity):
     ConnectivityManager.NetworkCallback(),
-    LifecycleObserver {
+    DefaultLifecycleObserver {
 
     private val connectivityManager = lifecycleOwner.getSystemService(Context.CONNECTIVITY_SERVICE)
             as ConnectivityManager
@@ -30,7 +28,7 @@ class NetworkStateMonitor(private val lifecycleOwner: AppCompatActivity):
 
 
     /** 최초 앱 실행시 네트워크 상태 체크 **/
-    fun initNetworkCheck() {
+    private fun initNetworkCheck() {
         val activeNetwork = connectivityManager.activeNetwork
         if(activeNetwork != null) {
             DLog.e("네트워크 연결되어 있음")
@@ -40,14 +38,20 @@ class NetworkStateMonitor(private val lifecycleOwner: AppCompatActivity):
     }
 
     /** Network 모니터링 서비스 시작 **/
-    fun enable() {
+    private fun enable() {
         check(lifecycleOwner.lifecycle.currentState.isAtLeast(Lifecycle.State.INITIALIZED))
         connectivityManager.registerNetworkCallback(networkRequest, this)
     }
 
-    /** Network 모니터링 서비스 해제 **/
-    @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
-    fun disable() {
+    override fun onCreate(owner: LifecycleOwner) {
+        super.onCreate(owner)
+        enable()
+        initNetworkCheck()
+    }
+
+    override fun onDestroy(owner: LifecycleOwner) {
+        super.onDestroy(owner)
+        // Network 모니터링 서비스 종료
         connectivityManager.unregisterNetworkCallback(this)
         lifecycleOwner.lifecycle.removeObserver(this)
     }
